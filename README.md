@@ -1,0 +1,2 @@
+# Spenditure
+Expense App
