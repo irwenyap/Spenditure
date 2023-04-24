@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Image, Text, View} from 'react-native';
 
 const OverviewScreen = () => {
+  const [date, setDate] = useState(new Date());
+
   return (
     <View>
       <View
@@ -9,6 +11,8 @@ const OverviewScreen = () => {
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-around',
+          paddingVertical: 10,
+          backgroundColor: '#EAE3C9',
         }}>
         <Text
           style={{
@@ -54,9 +58,13 @@ const OverviewScreen = () => {
           </Text>
         </View>
       </View>
-      <View style={{
-        alignSelf: 'center'
-      }}>
+      
+      <View
+        style={{
+          alignSelf: 'center',
+          paddingVertical: 5,
+          backgroundColor: '#C8AE7E',
+        }}>
         {/* <Image /> */}
         <Text>{new Date().toDateString()}</Text>
       </View>
