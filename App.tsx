@@ -6,14 +6,15 @@ import {OverviewScreen} from './src/screens';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 import BottomTabNavigator from './src/navigation/BottomTab';
 import {NavigationContainer} from '@react-navigation/native';
-import { CreateUserTable } from './src/database/database';
+import {CreateUserTable} from './src/database/database';
+import {PopulateArray} from './src/screens/transactions/TransactionsScreen';
 
 SystemNavigationBar.stickyImmersive();
-
 
 const App = () => {
   useEffect(() => {
     CreateUserTable();
+    PopulateArray();
   });
 
   return (

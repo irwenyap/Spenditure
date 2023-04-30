@@ -17,7 +17,7 @@ export const CreateUserTable = () => {
     'CREATE TABLE IF NOT EXISTS transactions(transtype INT, date DATE, account VARCHAR, category VARCHAR, amount INT, tag VARCHAR)',
     [],
     result => {
-      console.log('Table created successfully');
+      console.log('Table created successfully', result);
     },
     error => {
       console.log('Create table error', error);
@@ -25,15 +25,22 @@ export const CreateUserTable = () => {
   );
 };
 
-export const CreateTransaction = () => {
+export const CreateTransaction = (
+  type,
+  date,
+  account,
+  category,
+  amount,
+  tag,
+) => {
   let sql =
     'INSERT INTO transactions(transtype, date, account, category, amount, tag) VALUES (?, ?, ?, ?, ?, ?)';
-  let params = [1, 'date', 'account', 'category', 5, 'tag'];
+  let params = [type, date, account, category, amount, tag];
   db.executeSql(
     sql,
     params,
     result => {
-      Alert.alert('Success', 'User created successfully.');
+      Alert.alert('Success', 'User created successfully.', result);
     },
     error => {
       console.log('Create user error', error);
@@ -42,13 +49,19 @@ export const CreateTransaction = () => {
 };
 
 export const ViewTransactions = () => {
+  var temp = [];
   db.transaction(tx => {
-    tx.executeSql('SELECT * FROM transactions', [], (tx, results) => {
-      var temp = [];
+    tx.executeSql('SELECT rowid, * FROM transactions', [], (tx, results) => {
       for (let i = 0; i < results.rows.length; ++i) {
         temp.push(results.rows.item(i));
+        console.log(results.rows.item(i));
       }
-      console.log(temp);
     });
   });
+  return temp;
+};
+
+export const DeleteDatabase = () => {
+  SQLite.deleteDatabase({name: 'mydb', location: 'default'});
+  console.log('Database Deleted');
 };

@@ -58,7 +58,7 @@ const OverviewScreen = () => {
           </Text>
         </View>
       </View>
-      
+
       <View
         style={{
           alignSelf: 'center',
