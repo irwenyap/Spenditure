@@ -5,19 +5,44 @@ import {ViewTransactions} from '../../database/database';
 var transactionsList = [];
 
 const TransactionsScreen = () => {
-  console.log(transactionsList.length);
+  // transactionsEntryMap = transactionsList.map(transInfo => (
+  //   <TransactionEntry
+  //     key={transInfo.rowid}
+  //     Account={transInfo.account}
+  //     Category={transInfo.category}
+  //     Amount={transInfo.amount}
+  //     Tag={transInfo.tag}
+  //   />
+  // ));
 
-  transactionsEntryMap = transactionsList.map(transInfo => (
-    <TransactionEntry
-      key={transInfo.rowid}
-      Account={transInfo.account}
-      Category={transInfo.category}
-      Amount={transInfo.amount}
-      Tag={transInfo.tag}
-    />
-  ));
+  // return <View>{transactionsEntryMap}</View>;
 
-  return <View>{transactionsEntryMap}</View>;
+  return (
+    <View>
+      <TransactionEntry
+        key="5"
+        Account="Test"
+        Category="Music"
+        Amount="48"
+        Tag="Tag"
+      />
+      <TransactionEntry
+        key="6"
+        Account="Test"
+        Category="Music"
+        Amount="48"
+        Tag="Tag"
+      />
+      <DateHeader />
+      <TransactionEntry
+        key="7"
+        Account="Test"
+        Category="Music"
+        Amount="48"
+        Tag="Tag"
+      />
+    </View>
+  );
 };
 
 export const PopulateArray = () => {
@@ -27,13 +52,14 @@ export const PopulateArray = () => {
 // separate into a component
 const TransactionEntry = props => {
   return (
-    <View>
+    <Pressable>
       <View
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
+          alignContent: 'center',
           backgroundColor: 'grey',
-          marginVertical: 10,
+          marginVertical: 2,
         }}>
         <View>
           <Text
@@ -50,11 +76,53 @@ const TransactionEntry = props => {
           <Text>{props.Account}</Text>
         </View>
 
-        <View>
+        <View
+          style={{
+            alignSelf: 'center',
+          }}>
           <Text>{props.Amount}</Text>
         </View>
       </View>
-    </View>
+    </Pressable>
+  );
+};
+
+const DateHeader = () => {
+  return (
+    <Pressable
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderBottomColor: 'red',
+        borderBottomWidth: 1,
+      }}>
+      <View
+        style={{
+          flexDirection: 'row',
+        }}>
+        <Text
+          style={{
+            fontSize: 15,
+          }}>
+          Wed
+        </Text>
+        <Text
+          style={{
+            fontSize: 12,
+            alignSelf: 'flex-end',
+          }}>
+          19.06.23
+        </Text>
+      </View>
+
+      <View
+        style={{
+          flexDirection: 'row',
+        }}>
+        <Text>$148</Text>
+        <Text>$90</Text>
+      </View>
+    </Pressable>
   );
 };
 
