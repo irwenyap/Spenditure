@@ -1,20 +1,32 @@
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {TextInput} from 'react-native-gesture-handler';
-import SQLite from 'react-native-sqlite-storage';
-import {
-  CreateTransaction,
-  CreateUserTable,
-  DeleteDatabase,
-  ViewTransactions,
-} from '../../database/database';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+import {CreateTransaction, ViewTransactions} from '../../database/database';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
 
 const AddTransactionScreen = () => {
-  const [date, setDate] = useState(new Date());
-  const [account, setAccount] = useState('');
-  const [category, setCategory] = useState('');
-  const [amount, setAmount] = useState(0);
-  const [tag, setTag] = useState('');
+  const [showCalender, SetShowCalender] = useState(false);
+  const [showClock, SetShowClock] = useState(false);
+
+  const [transactionType, SetTransactionType] = useState('T');
+  const [date, SetDate] = useState(new Date());
+  const [time, SetTime] = useState(new Date());
+  const [account, SetAccount] = useState('');
+  const [category, SetCategory] = useState('');
+  const [amount, SetAmount] = useState(0);
+  const [tag, SetTag] = useState('');
+
+  function ChangeDate(event, value) {
+    SetDate(value);
+    SetShowCalender(false);
+  }
+
+  function ChangeTime(event, value) {
+    SetTime(value);
+    SetShowClock(false);
+  }
 
   const CreateTrans = () => {
     CreateTransaction(1, date, account, category, amount, tag);
@@ -34,7 +46,8 @@ const AddTransactionScreen = () => {
               backgroundColor: pressed ? 'black' : 'gray',
             },
             styles.pressableButton,
-          ]}>
+          ]}
+          onPress={() => SetTransactionType('I')}>
           <Text>Income</Text>
         </Pressable>
         <Pressable
@@ -43,7 +56,8 @@ const AddTransactionScreen = () => {
               backgroundColor: pressed ? 'black' : 'gray',
             },
             styles.pressableButton,
-          ]}>
+          ]}
+          onPress={() => SetTransactionType('E')}>
           <Text>Expense</Text>
         </Pressable>
         <Pressable
@@ -52,7 +66,8 @@ const AddTransactionScreen = () => {
               backgroundColor: pressed ? 'black' : 'gray',
             },
             styles.pressableButton,
-          ]}>
+          ]}
+          onPress={() => SetTransactionType('T')}>
           <Text>Transfer</Text>
         </Pressable>
       </View>
@@ -61,39 +76,82 @@ const AddTransactionScreen = () => {
         style={{
           flexDirection: 'row',
         }}>
-        <View style={{}}>
+        <View
+          style={{
+            marginHorizontal: 20,
+          }}>
           <Text style={styles.inputType}>Date: </Text>
-          <Text style={styles.inputType}>To: </Text>
-          <Text style={styles.inputType}>From: </Text>
+          {transactionType == 'T' && (
+            <View>
+              <Text style={styles.inputType}>To: </Text>
+              <Text style={styles.inputType}>From: </Text>
+            </View>
+          )}
+          {(transactionType == 'E') && (
+            <View>
+              <Text style={styles.inputType}>Account: </Text>
+              <Text style={styles.inputType}>Category: </Text>
+            </View>
+          )}
+          {(transactionType == 'I') && (
+            <View>
+              <Text style={styles.inputType}>Account: </Text>
+              <Text style={styles.inputType}>Category: </Text>
+            </View>
+          )}
           <Text style={styles.inputType}>Amount: </Text>
           <Text style={styles.inputType}>Tag: </Text>
         </View>
 
         <View style={{}}>
-          <TextInput
-            placeholder="Temp"
-            style={styles.textInput}
-            onChangeText={text => setDate(text)}
-          />
+          {showCalender && (
+            <RNDateTimePicker
+              mode="date"
+              value={new Date()}
+              onChange={ChangeDate}
+            />
+          )}
+          {showClock && (
+            <RNDateTimePicker
+              mode="time"
+              value={new Date()}
+              onChange={ChangeTime}
+            />
+          )}
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              ...styles.textInput,
+            }}>
+            <Pressable onPress={() => SetShowCalender(true)}>
+              <Text>{date.toDateString()}</Text>
+            </Pressable>
+
+            <Pressable onPress={() => SetShowClock(true)}>
+              <Text>{new Date().toLocaleTimeString()}</Text>
+            </Pressable>
+          </View>
+
           <TextInput
             placeholder="Account"
             style={styles.textInput}
-            onChangeText={text => setAccount(text)}
+            onChangeText={text => SetAccount(text)}
           />
           <TextInput
             placeholder="Category"
             style={styles.textInput}
-            onChangeText={text => setCategory(text)}
+            onChangeText={text => SetCategory(text)}
           />
           <TextInput
             placeholder="Amount"
             style={styles.textInput}
-            onChangeText={text => setAmount(text)}
+            onChangeText={text => SetAmount(text)}
           />
           <TextInput
             placeholder="Tag"
             style={styles.textInput}
-            onChangeText={text => setTag(text)}
+            onChangeText={text => SetTag(text)}
           />
         </View>
       </View>
@@ -147,7 +205,8 @@ const styles = StyleSheet.create({
     width: 200,
     padding: 0,
     borderColor: 'gray',
-    borderWidth: 1,
+    borderBottomWidth: 1,
     marginVertical: 10,
+    marginLeft: 5,
   },
 });
